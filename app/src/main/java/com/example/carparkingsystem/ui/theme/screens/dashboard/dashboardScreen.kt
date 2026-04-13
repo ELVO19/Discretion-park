@@ -47,7 +47,6 @@ private val TextMuted   = Color(0xFF94A3B8)
 private const val DEFAULT_OCCUPIED = 32
 private const val DEFAULT_TOTAL    = 50
 
-// ── DonutChart ────────────────────────────────────────────────────────────────
 @Composable
 private fun DonutChart(occupied: Int, total: Int, modifier: Modifier = Modifier) {
     val animProgress = remember { Animatable(0f) }
@@ -92,7 +91,7 @@ private fun DonutChart(occupied: Int, total: Int, modifier: Modifier = Modifier)
     }
 }
 
-// ── WeeklyBarChart ────────────────────────────────────────────────────────────
+
 @Composable
 private fun WeeklyBarChart(modifier: Modifier = Modifier) {
     val days   = listOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
@@ -139,7 +138,7 @@ private fun WeeklyBarChart(modifier: Modifier = Modifier) {
     }
 }
 
-// ── MiniStatCard ──────────────────────────────────────────────────────────────
+
 @Composable
 private fun MiniStatCard(
     label: String, value: String, sub: String,
@@ -191,7 +190,7 @@ private fun MiniStatCard(
     }
 }
 
-// ── ActivityRow ───────────────────────────────────────────────────────────────
+
 @Composable
 private fun ActivityRow(plate: String, slot: String, time: String, isEntry: Boolean) {
     Row(
@@ -233,7 +232,7 @@ private fun ActivityRow(plate: String, slot: String, time: String, isEntry: Bool
     }
 }
 
-// ── SectionHeader ─────────────────────────────────────────────────────────────
+
 @Composable
 private fun SectionHeader(title: String, action: String = "See all") {
     Row(
@@ -246,7 +245,7 @@ private fun SectionHeader(title: String, action: String = "See all") {
     }
 }
 
-// ── Dashboard (main) ──────────────────────────────────────────────────────────
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Dashboard(
