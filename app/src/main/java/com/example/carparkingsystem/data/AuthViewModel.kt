@@ -14,13 +14,11 @@ class AuthViewModel : ViewModel() {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    /* ─────────────────────────────────────────────
-       SIGN UP  (phone added as a parameter)
-    ───────────────────────────────────────────── */
+
     fun signup(
         username: String,
         email: String,
-        phone: String,                          // ← NEW
+        phone: String,
         password: String,
         confirmpassword: String,
         navController: NavController,
@@ -44,7 +42,7 @@ class AuthViewModel : ViewModel() {
                         userId   = userId,
                         username = username,
                         email    = email,
-                        phone    = phone        // ← saved to model
+                        phone    = phone
                     )
                     saveUserToDatabase(user, navController, context)
                 } else {

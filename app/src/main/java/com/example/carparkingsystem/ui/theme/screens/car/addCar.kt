@@ -19,11 +19,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -41,14 +43,20 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
 
-// ── Dashboard colour tokens ───────────────────────────────────────────────────
+import com.example.carparkingsystem.data.CarViewModel
+
+
 private val BgDeep      = Color(0xFF0F0C29)
 private val BgCard      = Color(0xFF24243E)
 private val Purple      = Color(0xFF7F5AF0)
@@ -57,11 +65,11 @@ private val Green       = Color(0xFF2CB67D)
 private val Cyan        = Color(0xFF00E5FF)
 private val TextPrimary = Color(0xFFF5F5F5)
 private val TextMuted   = Color(0xFF94A3B8)
-// ─────────────────────────────────────────────────────────────────────────────
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddCarScreen() {
+fun AddCarScreen(navController: NavController) {
     var imageUri    by remember { mutableStateOf<Uri?>(null) }
     var plateNumber by remember { mutableStateOf("") }
     var vehicleType by remember { mutableStateOf("") }
@@ -71,6 +79,8 @@ fun AddCarScreen() {
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? -> imageUri = uri }
+    val carViewModel: CarViewModel = viewModel()
+    val context = LocalContext.current
 
     Scaffold(
         containerColor = BgDeep,
@@ -85,6 +95,19 @@ fun AddCarScreen() {
                             brush = Brush.horizontalGradient(listOf(Purple, Green))
                         )
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.navigate("dashboard") {
+                            popUpTo("dashboard") { inclusive = true }
+                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor    = BgDeep,
@@ -104,7 +127,7 @@ fun AddCarScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            // ── Avatar / image picker ─────────────────────────────────────
+
             Box(
                 modifier = Modifier
                     .size(120.dp)
@@ -137,7 +160,7 @@ fun AddCarScreen() {
 
             Spacer(Modifier.height(12.dp))
 
-            // ── Select Image button ───────────────────────────────────────
+
             Button(
                 onClick = { launcher.launch("image/*") },
                 shape   = RoundedCornerShape(12.dp),
@@ -148,7 +171,7 @@ fun AddCarScreen() {
 
             Spacer(Modifier.height(28.dp))
 
-            // ── Text fields ───────────────────────────────────────────────
+
             val fieldColors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor   = Purple,
                 unfocusedBorderColor = TextMuted.copy(alpha = 0.4f),
@@ -208,9 +231,19 @@ fun AddCarScreen() {
 
             Spacer(Modifier.height(28.dp))
 
-            // ── Save Car button ───────────────────────────────────────────
+
             Button(
-                onClick  = { /* TODO: save car logic */ },
+                onClick  = { carViewModel.uploadCar(
+                    imageUri,
+                    plateNumber,
+                    vehicleType,
+                    driverName,
+                    phoneNumber,
+                    context,
+                    navController
+                )
+
+        },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(52.dp)
@@ -240,5 +273,5 @@ fun AddCarScreen() {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun AddCarScreenPreview() {
-    AddCarScreen()
+    AddCarScreen(rememberNavController())
 }

@@ -255,10 +255,10 @@ fun Dashboard(
 ) {
     val selectedItem = remember { mutableStateOf(0) }
 
-    // ── ViewModel & context for logout ───────────────────────────────────
+
     val authViewModel: AuthViewModel = viewModel()
     val context = LocalContext.current
-    // ─────────────────────────────────────────────────────────────────────
+
 
     Scaffold(
         containerColor = BgDeep,
@@ -419,10 +419,16 @@ fun Dashboard(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 Card(
-                    modifier = Modifier.weight(1f).height(130.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(130.dp)
+                        .clickable {
+                            navController.navigate("addCar")
+                        },
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
                     elevation = CardDefaults.cardElevation(0.dp)
+
                 ) {
                     Box(
                         modifier = Modifier.fillMaxSize()
