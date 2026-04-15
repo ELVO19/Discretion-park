@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,8 +55,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberAsyncImagePainter
+import androidx.compose.material3.*
 
+import androidx.compose.material3.rememberTimePickerState
+import java.util.Calendar
+
+import androidx.compose.material.icons.filled.DateRange
 import com.example.carparkingsystem.data.CarViewModel
+import java.util.Locale
+import androidx.compose.foundation.layout.Row
+
 
 
 private val BgDeep      = Color(0xFF0F0C29)
@@ -75,12 +85,15 @@ fun AddCarScreen(navController: NavController) {
     var vehicleType by remember { mutableStateOf("") }
     var driverName  by remember { mutableStateOf("") }
     var phoneNumber by remember { mutableStateOf("") }
+    var carColor by remember { mutableStateOf("") }
+    var expanded by remember { mutableStateOf(false) }
 
+    var entryTime by remember { mutableStateOf("") }
+    val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? -> imageUri = uri }
     val carViewModel: CarViewModel = viewModel()
-    val context = LocalContext.current
 
     Scaffold(
         containerColor = BgDeep,
@@ -207,6 +220,88 @@ fun AddCarScreen(navController: NavController) {
 
             Spacer(Modifier.height(14.dp))
 
+            data class CarColor(val name: String, val color: Color)
+
+            val colorsList = listOf(
+                CarColor("Red", Color(0xFFD32F2F)),
+                CarColor("Blue", Color(0xFF1976D2)),
+                CarColor("Black", Color.Black),
+                CarColor("White", Color.White),
+                CarColor("Silver", Color(0xFFB0BEC5)),
+                CarColor("Green", Color(0xFF388E3C)),
+                CarColor("Yellow", Color(0xFFFBC02D)),
+                CarColor("Orange", Color(0xFFF57C00)),
+                CarColor("Purple", Color(0xFF7B1FA2)),
+                CarColor("Pink", Color(0xFFE91E63)),
+                CarColor("Brown", Color(0xFF5D4037)),
+                CarColor("Gold", Color(0xFFFFD700))
+            )
+
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                OutlinedTextField(
+                    value = carColor,
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Car Color") },
+                    modifier = Modifier
+                        .menuAnchor(type = MenuAnchorType.PrimaryEditable, enabled = true)
+                        .fillMaxWidth(),
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = fieldColors
+                )
+
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                    modifier = Modifier
+                        .background(BgCard, RoundedCornerShape(12.dp))
+                ) {
+                    colorsList.forEach { item ->
+
+                        val isSelected = carColor == item.name
+
+                        DropdownMenuItem(
+                            text = {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+
+
+                                    Box(
+                                        modifier = Modifier
+                                            .size(20.dp)
+                                            .background(item.color, CircleShape)
+                                            .border(
+                                                width = 1.dp,
+                                                color = Color.Gray,
+                                                shape = CircleShape
+                                            )
+                                    )
+
+                                    Spacer(modifier = Modifier.width(12.dp))
+
+                                    Text(
+                                        text = item.name,
+                                        color = if (isSelected) PurpleLight else TextPrimary,
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal
+                                    )
+                                }
+                            },
+                            onClick = {
+                                carColor = item.name
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            Spacer(Modifier.height(14.dp))
+
             OutlinedTextField(
                 value         = driverName,
                 onValueChange = { driverName = it },
@@ -229,8 +324,57 @@ fun AddCarScreen(navController: NavController) {
                 colors        = fieldColors
             )
 
-            Spacer(Modifier.height(28.dp))
+            Spacer(Modifier.height(14.dp))
 
+            var showTimePicker by remember { mutableStateOf(false) }
+
+            OutlinedTextField(
+                value = entryTime,
+                onValueChange = {},
+                readOnly = true,
+                label = { Text("Entry Time") },
+                modifier = fieldModifier,
+                shape = RoundedCornerShape(12.dp),
+                colors = fieldColors,
+                trailingIcon = {
+                    IconButton(onClick = { showTimePicker = true }) {
+                        Icon(Icons.Default.DateRange, contentDescription = "Pick Time", tint = PurpleLight)
+                    }
+                }
+            )
+
+            if (showTimePicker) {
+                val timePickerState = rememberTimePickerState(
+                    initialHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
+                    initialMinute = Calendar.getInstance().get(Calendar.MINUTE),
+                    is24Hour = true
+                )
+                AlertDialog(
+                    onDismissRequest = { showTimePicker = false },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            entryTime = String.format(
+                                Locale.getDefault(),
+                                "%02d:%02d",
+                                timePickerState.hour,
+                                timePickerState.minute
+                            )
+                            showTimePicker = false
+                        }) { Text("OK", color = Purple) }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { showTimePicker = false }) {
+                            Text("Cancel", color = TextMuted)
+                        }
+                    },
+                    containerColor = BgCard,
+                    text = {
+                        TimePicker(state = timePickerState)
+                    }
+                )
+            }
+
+            Spacer(Modifier.height(28.dp))
 
             Button(
                 onClick  = { carViewModel.uploadCar(
@@ -239,6 +383,8 @@ fun AddCarScreen(navController: NavController) {
                     vehicleType,
                     driverName,
                     phoneNumber,
+                    carColor,
+                    entryTime,
                     context,
                     navController
                 )

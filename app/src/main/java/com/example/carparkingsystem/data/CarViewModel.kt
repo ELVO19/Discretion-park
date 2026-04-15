@@ -25,6 +25,7 @@ class CarViewModel:ViewModel() {
     val uploadPreset = "image_folder"
 
     fun uploadCar(imageUri: Uri?,plateNumber:String,vehicleType:String,driverName:String,phoneNumber:String,
+                  carColor:String,entryTime:String,
                       context: Context,navController: NavController){
 
         viewModelScope.launch (Dispatchers.IO){
@@ -37,6 +38,8 @@ class CarViewModel:ViewModel() {
                     "vehicleType" to vehicleType,
                     "driverName" to driverName,
                     "phoneNumber" to phoneNumber,
+                    "carColor" to carColor,
+                    "entryTime" to entryTime,
                     "imageUrl" to imageUrl
                 )
                 ref.setValue(carData).await()
