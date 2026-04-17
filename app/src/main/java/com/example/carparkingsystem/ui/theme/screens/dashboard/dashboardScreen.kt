@@ -445,20 +445,41 @@ fun Dashboard(
                         }
                     }
                 }
+
+
                 Card(
-                    modifier = Modifier.weight(1f).height(130.dp),
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(130.dp)
+                        .clickable {
+                            navController.navigate("carList")   // ← ADD THIS
+                        },
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(containerColor = Color.Transparent),
                     elevation = CardDefaults.cardElevation(0.dp)
                 ) {
                     Box(
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
                             .background(Brush.verticalGradient(listOf(Color(0xFF2CB67D), Color(0xFF1A8A5A)))),
                         contentAlignment = Alignment.Center
                     ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-                            Box(modifier = Modifier.size(52.dp).background(Color.White.copy(0.15f), CircleShape), contentAlignment = Alignment.Center) {
-                                Icon(Icons.AutoMirrored.Filled.List, contentDescription = "View Cars", tint = Color.White, modifier = Modifier.size(28.dp))
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(52.dp)
+                                    .background(Color.White.copy(0.15f), CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.List,
+                                    contentDescription = "View Cars",
+                                    tint = Color.White,
+                                    modifier = Modifier.size(28.dp)
+                                )
                             }
                             Spacer(Modifier.height(8.dp))
                             Text("View Cars", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Color.White, letterSpacing = 0.5.sp)
