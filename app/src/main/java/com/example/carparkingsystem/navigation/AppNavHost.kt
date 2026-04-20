@@ -13,13 +13,15 @@ import com.example.carparkingsystem.ui.theme.screens.car.UpdateCarScreen
 import com.example.carparkingsystem.ui.theme.screens.dashboard.Dashboard
 import com.example.carparkingsystem.ui.theme.screens.login.LoginScreen
 import com.example.carparkingsystem.ui.theme.screens.register.RegisterScreen
+import com.example.carparkingsystem.ui.theme.screens.splashScreen.SplashScreen
 
 @Composable
 fun AppNavHost(
     navController: NavHostController = rememberNavController(),
-    startDestination: String = ROUTE_REGISTER
+    startDestination: String = ROUTE_SPLASH
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
+        composable(ROUTE_SPLASH)    { SplashScreen(navController) }
         composable(ROUTE_REGISTER)  { RegisterScreen(navController) }
         composable(ROUTE_LOGIN)     { LoginScreen(navController) }
         composable(ROUTE_DASHBOARD) { Dashboard(navController) }
