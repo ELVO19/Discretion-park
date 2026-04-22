@@ -41,7 +41,7 @@ import com.example.carparkingsystem.navigation.ROUTE_LOGIN
 fun RegisterScreen(navController: NavController) {
     var username              by remember { mutableStateOf("") }
     var email                 by remember { mutableStateOf("") }
-    var phone                 by remember { mutableStateOf("") }   // ← NEW
+    var phone                 by remember { mutableStateOf("") }
     var password              by remember { mutableStateOf("") }
     var confirmPassword       by remember { mutableStateOf("") }
     var passwordVisible       by remember { mutableStateOf(false) }
@@ -96,7 +96,7 @@ fun RegisterScreen(navController: NavController) {
                 )
 
                 Text(
-                    text = "Join the Car Parking System",
+                    text = "Join the Discretion Car Parking System",
                     fontSize = 13.sp,
                     color = Color.White.copy(alpha = 0.45f)
                 )
@@ -118,7 +118,7 @@ fun RegisterScreen(navController: NavController) {
                     keyboardType = KeyboardType.Email
                 )
 
-                // ── PHONE NUMBER FIELD (NEW) ──────────────────────────────
+
                 StyledTextField(
                     value = phone,
                     onValueChange = { phone = it },
@@ -126,7 +126,7 @@ fun RegisterScreen(navController: NavController) {
                     leadingIcon = Icons.Default.Phone,
                     keyboardType = KeyboardType.Phone
                 )
-                // ─────────────────────────────────────────────────────────
+
 
                 StyledTextField(
                     value = password,

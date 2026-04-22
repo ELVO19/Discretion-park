@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material3.Icon
-
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -127,9 +126,9 @@ fun SplashScreen(navController: NavController) {
 
             Spacer(Modifier.height(28.dp))
 
-            // App name with gradient
+
             Text(
-                text  = "Car Parking System",
+                text  = "DISCRETION CAR PARK",
                 fontSize   = 26.sp,
                 fontWeight = FontWeight.Bold,
                 style = TextStyle(

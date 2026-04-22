@@ -31,7 +31,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.carparkingsystem.R
-import com.example.carparkingsystem.data.AuthViewModel           // ← import VM
+import com.example.carparkingsystem.data.AuthViewModel
 import com.example.carparkingsystem.navigation.ROUTE_REGISTER
 import com.example.carparkingsystem.ui.theme.screens.register.StyledTextField
 
@@ -41,10 +41,10 @@ fun LoginScreen(navController: NavController) {
     var password        by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
 
-    // ── ViewModel & context ───────────────────────────────────────────────
+
     val authViewModel: AuthViewModel = viewModel()
     val context = LocalContext.current
-    // ─────────────────────────────────────────────────────────────────────
+
 
     val gradientBackground = Brush.verticalGradient(
         colors = listOf(Color(0xFF0F0C29), Color(0xFF302B63), Color(0xFF24243E))
@@ -129,7 +129,7 @@ fun LoginScreen(navController: NavController) {
 
                 Spacer(modifier = Modifier.height(6.dp))
 
-                // ── LOGIN BUTTON — now calls authViewModel.login() ────────
+
                 Button(
                     onClick = {
                         authViewModel.login(
@@ -166,7 +166,7 @@ fun LoginScreen(navController: NavController) {
                         )
                     }
                 }
-                // ─────────────────────────────────────────────────────────
+
 
                 Row(
                     horizontalArrangement = Arrangement.Center,
@@ -190,7 +190,7 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
-// ── Shared StyledTextField (kept here for the login screen's own imports) ─────
+
 @Composable
 fun StyledTextField(
     value: String,
